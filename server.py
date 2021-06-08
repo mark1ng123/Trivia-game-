@@ -49,7 +49,7 @@ def load_questions_from_web():
     response = requests.get("https://opentdb.com/api.php?amount=50&type=multiple")
     content = response.content
     data = json.loads(content)
-    randomAnswerIndex = randint(1, 4)
+    randomAnswerIndex = random.randint(1, 4)
     for index, row in enumerate(data["results"]):
         data_list = []
         data_list.append(html.unescape(row["question"]))
@@ -58,6 +58,7 @@ def load_questions_from_web():
         data_list.insert(randomAnswerIndex, html.unescape(row["correct_answer"]))
         data_list.append(str(randomAnswerIndex))
         questions[str(index + 1)] = data_list
+        randomAnswerIndex = random.randint(1, 4)
 
 
 def build_and_send_message(conn, code, msg):
@@ -256,7 +257,6 @@ def main():
     global messages_to_send
 
     load_questions_from_web()
-    create_random_question1()
     SERVER_SOCKET = setup_socket()
     client_sockets = []
     while True:
